@@ -4,8 +4,8 @@ import com.scit.project.vo.MemberVO;
 
 public interface MemberMapper {
 
-	int memberSelectOne(String member_id);
+	public int memberSelectOne(String member_id);
 
-	int memberJoin(MemberVO member);
-
+	public int memberJoin(MemberVO member);
+	
 }

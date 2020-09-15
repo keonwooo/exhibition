@@ -1,7 +1,5 @@
 package com.scit.project.service;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +12,8 @@ public class MemberService {
 	@Autowired
 	private MemberDAO dao;
 	
-	@Autowired
-	private HttpSession session;
 	
-	public String memberJoin(MemberVO member) {
+	public String memberJoin(MemberVO member) throws Exception {
 		dao.memberJoin(member);
 		return "redirect:/member/memberJoinForm";
 	}

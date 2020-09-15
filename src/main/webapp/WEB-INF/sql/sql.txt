@@ -8,4 +8,10 @@ create table member(
     ,member_gender         varchar2(5)
     ,member_address        varchar2(50)
     ,member_address_detail varchar2(50)
+    ,member_Certification	number	default 0	not null
+);
+
+create table userAuth(
+    userEmail   varchar2(100) primary key
+    ,authKey    varchar2(100)
 );
