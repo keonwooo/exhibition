@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -10,34 +11,53 @@
 
 	$(function () {
 	    var chk = -1;
-	    
+	    var data = {"member_email": $("#member_email").val()};
 	    
 	    $("#auth_btn").click(function () {
-	        var data = {"member_email": $("#member_email").val()};
 	        var authNum = "";
-	        
+
 	        $.ajax({
-	            url : "/member/emailAuth.do",
-	            data : data,
-	            success : function (data) {
-	                authNum = data;
-	                alert("인증번호 전송완료.");
-	                
-	                chk = checkNum(authNum);
-	                
-	                if( chk > 0){
-	                    alert("인증완료");
-	                    chk = 1;
-	                    $("#lab1").html("<label>인증완료</label>");
-	                }else{
-	                    alert("인증실패");
-	                    $("#lab1").html("<label>인증실패</label>");
-	                }
-	                
-	            }
-	            
-	        });
-	        
+				url:"/member/emailCheck",
+				data:{
+					member_email:$("#member_email").val()
+					},
+				success:function(data){
+					if(data==1){
+						$("#lab1").text("사용중인 이메일입니다");
+						$("#lab1").css("color","red");
+					}else{
+						$("#auth_btn").click(function () {
+					        $.ajax({
+					            url : "/member/emailAuth.do",
+					            data : {"member_email": $("#member_email").val()},
+					            success : function (data) {
+					                authNum = data;
+					                alert("인증번호 전송완료.");
+					                
+					                chk = checkNum(authNum);
+					                
+					                if( chk > 0){
+					                    alert("인증완료");
+					                    chk = 1;
+					                    $("#lab1").html("<label>인증완료</label>");
+					                }else{
+					                    alert("인증실패");
+					                    $("#lab1").html("<label>인증실패</label>");
+					                }
+					                
+					            }
+					            
+					        });
+
+						});
+					}
+				},
+				error:function(e){
+					alert("통신 실패");
+					console.log(e);
+					}
+			});
+			
 	    });// 이메일 인증 버튼 end
 	    
 	    // 회원가입

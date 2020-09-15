@@ -52,6 +52,14 @@ public class MemberController {
 		return str;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/emailCheck", method = RequestMethod.GET, produces = "application/text;charset=utf-8")
+	public String emailCheck(String member_email) {
+		int cnt = service.emailCheck(member_email);
+		String str = Integer.toString(cnt);
+		return str;
+	}
+	
 	public void setMailSender(MailSender mailSender) {
 		this.mailSender = mailSender;
 	}

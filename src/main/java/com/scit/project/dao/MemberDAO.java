@@ -25,11 +25,22 @@ public class MemberDAO {
 		return cnt;
 	}
 	
-	public int memberSelectOne(String member_id) {
+	public int memberSelectOneId(String member_id) {
 		MemberMapper mapper = session.getMapper(MemberMapper.class);
 		int cnt = 0;
 		try {
-			cnt = mapper.memberSelectOne(member_id);
+			cnt = mapper.memberSelectOneId(member_id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+
+	public int memberSelectOneEm(String member_email) {
+		MemberMapper mapper = session.getMapper(MemberMapper.class);
+		int cnt = 0;
+		try {
+			cnt = mapper.memberSelectOneEm(member_email);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

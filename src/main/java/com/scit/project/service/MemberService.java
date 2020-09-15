@@ -19,7 +19,12 @@ public class MemberService {
 	}
 	
 	public int idCheck(String member_id) {
-		int cnt = dao.memberSelectOne(member_id);
+		int cnt = dao.memberSelectOneId(member_id);
+		return cnt;
+	}
+
+	public int emailCheck(String member_email) {
+		int cnt = dao.memberSelectOneEm(member_email);
 		return cnt;
 	}
 
