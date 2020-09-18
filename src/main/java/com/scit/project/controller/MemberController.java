@@ -1,5 +1,8 @@
 package com.scit.project.controller;
 
+import java.util.HashMap;
+
+import javax.mail.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -17,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.scit.project.service.MemberService;
+import com.scit.project.util.NaverLoginBO;
 import com.scit.project.vo.MemberVO;
 
 @Controller
@@ -29,17 +33,61 @@ public class MemberController {
 	@Autowired
 	private MailSender mailSender;
 	
+	/* NaverLoginBO */
+	@Autowired
+	private NaverLoginBO naverLoginBO;
+	private String apiResult = null;
+	
+	@Autowired
+	private void setNaverLoginBO(NaverLoginBO naverLoginBO) {
+		this.naverLoginBO = naverLoginBO;
+	}
+	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
+	//로그인 화면으로 이동
+	@RequestMapping(value = "/memberLoginPage", method = { RequestMethod.GET, RequestMethod.POST })
+	public String memberLoginPage(Model model, HttpSession session) {
+		
+		/* 네이버아이디로 인증 URL을 생성하기 위하여 naverLoginBO클래스의 getAuthorizationUrl메소드 호출 */
+		String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);
+		
+		//https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=sE***************&
+		//redirect_uri=http%3A%2F%2F211.63.89.90%3A8090%2Flogin_project%2Fcallback&state=e68c269c-5ba9-4c31-85da-54c16c658125
+		System.out.println("네이버:" + naverAuthUrl);
+		
+		//네이버
+		model.addAttribute("url", naverAuthUrl);
+		return "member/memberLoginPage";
+	}
+	
+	@RequestMapping(value = "/Login", method = RequestMethod.POST)
+	public String memberLogin(MemberVO member, Model model, HttpSession session) {
+		String page = service.memberLogin(member);
+		return page;
+	}
+	
+	//회원가입 화면으로 이동
 	@RequestMapping(value = "/memberJoinForm", method = RequestMethod.GET)
-	public String memberJoinForm() {
+	public String memberJoinForm(Model model, HttpSession session) {
+		String name = "";
+		String email = "";
+		HashMap<String, String> hash = new HashMap<String, String>();
+		
+		name = (String) session.getAttribute("sessionName");
+		email = (String) session.getAttribute("sessionEmail");
+		
+		hash.put("naver_name", name);
+		hash.put("naver_email", email);
+		
+		model.addAttribute("map", hash);
 		return "member/memberJoinForm";
 	}
 	
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
 	public String memberJoin(MemberVO member, Model model, RedirectAttributes rttr, HttpServletRequest request, HttpSession session) throws Exception {
 		String page = service.memberJoin(member);
-		rttr.addFlashAttribute("authmsg" , "가입시 사용한 이메일로 인증해주 3");
+		rttr.addFlashAttribute("authmsg" , "가입시 사용한 이메일로 인증해주세요");
 		return page;
 	}
 	

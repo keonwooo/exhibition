@@ -46,5 +46,17 @@ public class MemberDAO {
 		}
 		return cnt;
 	}
+
+	public MemberVO memberSelectOne(String member_id) {
+		MemberMapper mapper = session.getMapper(MemberMapper.class);
+		MemberVO member = null;
+		
+		try {
+			member = mapper.memberSelectOne(member_id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return member;
+	}
 	
 }

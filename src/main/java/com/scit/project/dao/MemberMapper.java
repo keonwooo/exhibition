@@ -9,5 +9,7 @@ public interface MemberMapper {
 	public int memberJoin(MemberVO member);
 
 	public int memberSelectOneEm(String member_email);
+
+	public MemberVO memberSelectOne(String member_id);
 	
 }

@@ -36,6 +36,17 @@
 			member_id = #{member_id}
 	</select>
 	
+	<select id="memberSelectOne" parameterType="string" resultType="member">
+		select
+			member_id
+			,member_pw
+			,member_name
+		from
+			member
+		where
+			member_id = #{member_id}
+	</select>
+	
 	<select id="memberSelectOneEm" parameterType="string" resultType="int">
 		select
 			count(*)
