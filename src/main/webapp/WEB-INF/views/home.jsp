@@ -16,7 +16,7 @@
 	<h1>[ 메인 페이지 ]</h1>
 		<c:choose>
 			<c:when test="${sessionScope.loginID != null }">
-				<h2> 네이버 아이디 로그인 성공</h2>
+				<h2> 로그인 성공</h2>
 				<h3> '${sessionScope.loginID }'님 환영합니다</h3>
 				<h4><a href="logout">로그아웃</a></h4>
 			</c:when>
