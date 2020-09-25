@@ -68,18 +68,27 @@ public class MemberController {
 	
 	//회원가입 화면으로 이동
 	@RequestMapping(value = "/memberJoinForm", method = RequestMethod.GET)
-	public String memberJoinForm(Model model, HttpSession session) {
-		String name = "";
-		String email = "";
+	public String memberJoinForm(Model model, HttpSession session, String kakaoName, String kakaoEmail) {
 		HashMap<String, String> hash = new HashMap<String, String>();
 		
-		name = (String) session.getAttribute("sessionName");
-		email = (String) session.getAttribute("sessionEmail");
+		String name = "";
+		String email = "";
 		
-		hash.put("naver_name", name);
-		hash.put("naver_email", email);
+		if (kakaoName == null) {
+			// 네이버로 회원가입 시도한 상황
+			name = (String) session.getAttribute("sessionName");
+			email = (String) session.getAttribute("sessionEmail");
+		} else {
+			// 카카오로 회원가입 시도한 상황
+			name = kakaoName;
+			email = kakaoEmail;
+		}
+		
+		hash.put("name", name);
+		hash.put("email", email);
 		
 		model.addAttribute("map", hash);
+		
 		return "member/memberJoinForm";
 	}
 	

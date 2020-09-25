@@ -223,8 +223,8 @@
 			<tr>
 				<td>이름<span class="important">(*)</span></td>
 					<c:choose>
-						<c:when test="${map.naver_name!=null }">
-							<td><input type="text" name="member_name" id="member_name" value="${map.naver_name }" readonly="readonly"></td>
+						<c:when test="${map.name!=null }">
+							<td><input type="text" name="member_name" id="member_name" value="${map.name }" readonly="readonly"></td>
 						</c:when>
 						<c:otherwise>
 							<td><input type="text" name="member_name" id="member_name"></td>
@@ -240,8 +240,8 @@
 			<tr>
 				<td>이메일<span class="important">(*)</span></td>
 				<c:choose>
-					<c:when test="${map.naver_email!=null }">
-						<td><input type="text" name="member_email" id="member_email" value="${map.naver_email }" readonly="readonly"></td>
+					<c:when test="${map.email!=null }">
+						<td><input type="text" name="member_email" id="member_email" value="${map.email }" readonly="readonly"></td>
 					</c:when>
 					<c:otherwise>
 						<td><input type="text" name="member_email" id="member_email"><input type="button" id="auth_btn" value="인증"><br>
