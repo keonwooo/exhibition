@@ -19,9 +19,9 @@
 	$(function () {
 	    var chk = -1;
 	    var data = {"member_email": $("#member_email").val()};
+        var authNum = "";
 	    
 	    $("#auth_btn").click(function () {
-	        var authNum = "";
 
 	        $.ajax({
 				url:"/member/emailCheck",
@@ -40,18 +40,6 @@
 					            success : function (data) {
 					                authNum = data;
 					                alert("인증번호 전송완료.");
-					                
-					                chk = checkNum(authNum);
-					                
-					                if( chk > 0){
-					                    alert("인증완료");
-					                    chk = 1;
-					                    $("#lab1").html("<label>인증완료</label>");
-					                }else{
-					                    alert("인증실패");
-					                    $("#lab1").html("<label>인증실패</label>");
-					                }
-					                
 					            }
 					            
 					        });
@@ -67,8 +55,30 @@
 			
 	    });// 이메일 인증 버튼 end
 	    
+		$("#email_check").click(function(){
+			var chk = 0;
+	        var user_authNum = document.getElementById("user_authNum").value;
+
+	    	// 인증번호 비교
+	        if (authNum == user_authNum) {
+	            chk = 1;
+	        } else {
+	            chk = -1;
+	        }
+
+	        if( chk > 0){
+                alert("인증완료");
+                chk = 1;
+                $("#lab1").html("<label>인증완료</label>");
+            }else{
+                alert("인증실패");
+                $("#lab1").html("<label>인증실패</label>");
+            }
+
+		});
+			
 	    // 회원가입
-	    $("#signUp_btn").click(function () {
+	    $("#join_submit").click(function () {
 	        if( chk > 0  ){
 	            return true;
 	        }else{
@@ -80,19 +90,9 @@
 	    
 	});
 
-	function checkNum(authNum) {
-        var chk = 0;
-        var user_authNum = prompt("인증번호를 입력하세요.");
-        // 인증번호 비교
-        if (authNum == user_authNum) {
-            chk = 1;
-            $("#user_authNum").val(user_authNum);
-        } else {
-            chk = -1;
-        }
- 
-        return chk;
-    };
+    function join_cancel(){
+    	location.href = "/member/memberLoginPage";
+    } 
 
 	function join_submit(){
 		var member_id = document.getElementById("member_id").value;
@@ -217,7 +217,7 @@
 			
 			<tr>
 				<td>연락처<span class="important">(*)</span></td>
-				<td><input type="text" name="member_phone"  id="member_phone" placeholder="'-'없이 입력"><input type="button" value="인증"><div id="phoneCheck"></div></td>
+				<td><input type="text" name="member_phone"  id="member_phone" placeholder="'-'없이 입력"></td>
 			</tr>
 	
 			<tr>
@@ -245,7 +245,7 @@
 					</c:when>
 					<c:otherwise>
 						<td><input type="text" name="member_email" id="member_email"><input type="button" id="auth_btn" value="인증"><br>
-						인증번호:<input type="text" id="user_authNum" name="user_authNum" readonly="readonly"><div id="lab1"></div></td>
+						인증번호:<input type="text" id="user_authNum" name="user_authNum"><input type="button" id="email_check" value="확인"><div id="lab1"></div></td>
 					</c:otherwise>
 				</c:choose>
 			</tr>
@@ -260,7 +260,7 @@
 		
 			<tr>
 				<td>주소</td>
-				<td><input type="text" name="member_address" id="member_address"><input type="button" value="우편번호 찾기"></td>
+				<td><input type="text" name="member_address" id="member_address"></td>
 			</tr>
 			
 			<tr>
@@ -268,7 +268,7 @@
 				<td><input type="text" name="member_address_detail" id="member_address_detail"></td>
 			</tr>
 		</table>
-		<input type="button" value="취소">
+		<input type="button" value="취소" onclick="join_cancel()">
 		<input type="button" id="join_submit" onclick="join_submit()" value="가입">
 				
 		<form action="/member/join" method="post" id="joinForm">

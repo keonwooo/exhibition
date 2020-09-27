@@ -73,23 +73,36 @@ public class MemberController {
 		
 		String name = "";
 		String email = "";
+		String str = "";
 		
-		if (kakaoName == null) {
-			// 네이버로 회원가입 시도한 상황
-			name = (String) session.getAttribute("sessionName");
-			email = (String) session.getAttribute("sessionEmail");
-		} else {
-			// 카카오로 회원가입 시도한 상황
-			name = kakaoName;
-			email = kakaoEmail;
+		int cnt = service.emailCheck(kakaoEmail);
+		if(cnt!=1) {	
+			if (kakaoName == null) {
+				// 네이버로 회원가입 시도한 상황
+				name = (String) session.getAttribute("sessionName");
+				email = (String) session.getAttribute("sessionEmail");
+				hash.put("name", name);
+				hash.put("email", email);
+				model.addAttribute("map", hash);
+			} else {
+				// 카카오로 회원가입 시도한 상황
+				name = kakaoName;
+				email = kakaoEmail;
+				hash.put("name", name);
+				hash.put("email", email);
+				model.addAttribute("map", hash);
+				return "member/memberJoinForm";
+			}
+			str = "member/memberJoinForm";
+		}else {
+			if(kakaoName!=null) {
+				session.setAttribute("loginID", kakaoName);
+				session.setAttribute("sessionEmail", kakaoEmail);
+			}
+			str = "redirect:/";
 		}
 		
-		hash.put("name", name);
-		hash.put("email", email);
-		
-		model.addAttribute("map", hash);
-		
-		return "member/memberJoinForm";
+		return str;
 	}
 	
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
